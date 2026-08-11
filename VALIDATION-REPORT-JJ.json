@@ -1,0 +1,37 @@
+{
+  "status": "OK",
+  "missing_or_errors": [],
+  "images": {
+    "evento-hora-americano.png": {
+      "format": "PNG",
+      "size": [
+        1448,
+        1086
+      ],
+      "kb": 1435.5
+    },
+    "evento-fecha-futbol.png": {
+      "format": "PNG",
+      "size": [
+        1448,
+        1086
+      ],
+      "kb": 1566.4
+    },
+    "evento-lugar-f1.png": {
+      "format": "PNG",
+      "size": [
+        1448,
+        1086
+      ],
+      "kb": 1392.6
+    }
+  },
+  "video": {
+    "path": "assets/video/video-jj.mp4",
+    "kb": 1918.6
+  },
+  "apps_script_present": true,
+  "adult_timeline_present": true,
+  "video_tag_present": true
+}
