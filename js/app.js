@@ -1,9 +1,6 @@
 (() => {
   "use strict";
 
-  const SCRIPT_URL =
-    "https://script.google.com/macros/s/AKfycbxVO7i3DXBs4sqQ1UsVZCKZWWxXE-TnXrGeep6hwZM4yiDkqPhr9Qf8t5__NjZ08Ihskw/exec";
-
   function hideLoader() {
     const loader = document.querySelector("#loader");
 
@@ -19,10 +16,65 @@
     }, 900);
   }
 
-  function showStatus(status, message, type) {
-    status.textContent = message;
-    status.className =
-      `form-status is-visible is-${type}`;
+  function removeRsvpForm() {
+    const form = document.querySelector("#rsvp-form");
+
+    if (form) {
+      form.remove();
+    }
+
+    const intro = document.querySelector(".rsvp-intro p");
+
+    if (intro) {
+      intro.textContent =
+        "Confirma tu asistencia directamente por WhatsApp para ayudarnos a preparar cada detalle.";
+    }
+
+    const whatsappText = document.querySelector(".whatsapp-confirm__text");
+
+    if (whatsappText) {
+      whatsappText.textContent =
+        "Confirma tu asistencia por WhatsApp. No es necesario llenar formulario.";
+    }
+  }
+
+  function clarifyFamilySchedule() {
+    const adultCard = document.querySelector(
+      ".timeline-card--adultos"
+    );
+
+    if (!adultCard) {
+      return;
+    }
+
+    const description = adultCard.querySelector(
+      ".timeline-description"
+    );
+
+    if (description) {
+      description.textContent =
+        "Hasta antes del show, la celebración mantiene un ambiente familiar para disfrutar con grandes y pequeños. A partir de las 10:00 PM inicia el cierre solo para adultos con el Show JJ.";
+    }
+
+    const badge = adultCard.querySelector(".timeline-adult-badge");
+
+    if (badge) {
+      badge.textContent = "Desde 10:00 PM · Solo adultos";
+      badge.setAttribute(
+        "aria-label",
+        "A partir de las 10:00 PM el evento es solo para adultos"
+      );
+    }
+
+    if (!adultCard.querySelector(".timeline-family-note")) {
+      const note = document.createElement("p");
+      note.className = "timeline-family-note";
+      note.textContent =
+        "Antes de este momento, la convivencia es familiar.";
+
+      const video = adultCard.querySelector(".timeline-video");
+      adultCard.insertBefore(note, video || null);
+    }
   }
 
   document.addEventListener("DOMContentLoaded", () => {
@@ -45,85 +97,8 @@
       });
     });
 
-    /* Formulario RSVP */
-    const form = document.querySelector("#rsvp-form");
-    const status = document.querySelector("#form-status");
-
-    if (form && status) {
-      /*
-       * Refuerzo la URL desde JavaScript. Así el formulario seguirá
-       * funcionando aunque el atributo action sea modificado por error.
-       */
-      form.action = SCRIPT_URL;
-      form.method = "POST";
-
-      form.addEventListener("submit", async (event) => {
-        event.preventDefault();
-
-        if (!form.checkValidity()) {
-          form.reportValidity();
-
-          showStatus(
-            status,
-            "Revisa los campos obligatorios antes de continuar.",
-            "error"
-          );
-
-          return;
-        }
-
-        const button = form.querySelector(
-          'button[type="submit"]'
-        );
-
-        if (!button || button.disabled) {
-          return;
-        }
-
-        const originalText = button.textContent;
-
-        button.disabled = true;
-        button.textContent = "Enviando...";
-
-        status.textContent = "";
-        status.className = "form-status";
-
-        try {
-          /*
-           * Apps Script no devuelve encabezados CORS compatibles con
-           * GitHub Pages. Por eso se usa no-cors; el envío sí llega a
-           * doPost(), aunque el navegador no pueda leer su respuesta.
-           */
-          await fetch(SCRIPT_URL, {
-            method: "POST",
-            body: new FormData(form),
-            mode: "no-cors"
-          });
-
-          showStatus(
-            status,
-            "Tu asistencia fue enviada correctamente. ¡Gracias!",
-            "success"
-          );
-
-          form.reset();
-        } catch (error) {
-          console.error(
-            "Error al enviar la confirmación:",
-            error
-          );
-
-          showStatus(
-            status,
-            "No fue posible enviar la confirmación. Inténtalo nuevamente o utiliza WhatsApp.",
-            "error"
-          );
-        } finally {
-          button.disabled = false;
-          button.textContent = originalText;
-        }
-      });
-    }
+    removeRsvpForm();
+    clarifyFamilySchedule();
 
     /*
      * Respaldo: evita que el sitio se quede detenido en
