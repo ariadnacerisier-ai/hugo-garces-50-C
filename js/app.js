@@ -95,7 +95,7 @@
     if (timelineHeader && !timelineHeader.querySelector(".timeline-family-banner")) {
       const banner = document.createElement("p");
       banner.className = "timeline-family-banner";
-      banner.textContent = "Para toda la familia · convivencia, comida y actividades hasta antes del Show JJ";
+      banner.textContent = "Show solo para mayores de edad.";
       timelineHeader.appendChild(banner);
     }
 
@@ -104,19 +104,19 @@
 
     const description = adultCard.querySelector(".timeline-description");
     if (description) {
-      description.textContent = "Hasta antes del show, la celebración mantiene un ambiente familiar para disfrutar con grandes y pequeños. A partir de las 10:00 PM inicia el cierre solo para adultos con el Show JJ.";
+      description.textContent = "¡Que siga la fiesta! Con mucha alegría y buena comedia con nuestro amigo JJ.";
     }
 
     const badge = adultCard.querySelector(".timeline-adult-badge");
     if (badge) {
-      badge.textContent = "Desde 10:00 PM · Solo adultos";
+      badge.textContent = "Desde 10:00 PM solo +18";
       badge.setAttribute("aria-label", "A partir de las 10:00 PM el evento es solo para adultos");
     }
 
     if (!adultCard.querySelector(".timeline-family-note")) {
       const note = document.createElement("p");
       note.className = "timeline-family-note";
-      note.textContent = "Antes de este momento, la convivencia es familiar.";
+      note.textContent = "Show solo para mayores de edad. Clasificación C";
       const video = adultCard.querySelector(".timeline-video");
       adultCard.insertBefore(note, video || null);
     }
